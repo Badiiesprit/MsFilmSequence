@@ -1,0 +1,101 @@
+services:
+  ms-discoveryserver:
+    image: ms-discoveryserver:latest
+    container_name: ms-discoveryserver-container
+    build: ./ms-discoveryserver
+    restart: on-failure
+    ports:
+      - "8761:8761"
+    volumes: 
+      - ./ms-discoveryserver:/ms-discoveryserver
+ 
+  ms-configserver:
+    image: ms-configserver:latest
+    build: ./ms-configserver
+    ports:
+      - "9093:9093"
+    restart: on-failure
+    volumes: 
+      - ./ms-configserver:/ms-configserver
+    environment: 
+      - CONFIG_SERVER=ms-discoveryserver-container
+    depends_on:
+      - ms-discoveryserver
+ 
+  ms-gatewayserver:
+    image: ms-gatewayserver:latest
+    build: ./ms-gatewayserver
+    restart: on-failure
+    ports:
+      - "9092:9092"
+    volumes: 
+      - ./ms-gatewayserver:/ms-gatewayserver
+    environment: 
+      - CONFIG_SERVER=ms-discoveryserver-container
+    depends_on:
+      - ms-discoveryserver
+      - ms-configserver
+ 
+  ms-sharedlibrary:
+    image: ms-sharedlibrary:latest
+    build: ./ms-sharedlibrary
+    restart: on-failure
+    volumes: 
+      - ./ms-sharedlibrary:/ms-sharedlibrary
+    environment: 
+      - CONFIG_SERVER=ms-discoveryserver-container
+ 
+  ms-film:
+    image: ms-film:latest
+    build: ./ms-film
+    restart: on-failure
+    ports:
+      - "9090:9090"
+    volumes: 
+      - ./ms-film:/ms-film
+    environment: 
+      - CONFIG_SERVER=ms-discoveryserver-container
+    depends_on:
+      - ms-discoveryserver
+      - ms-configserver
+      - mysql-service
+ 
+  ms-sequence:
+    image: ms-sequence:latest
+    build: ./ms-sequence
+    restart: on-failure
+    ports:
+      - "9091:9091"
+    volumes: 
+      - ./ms-sequence:/ms-sequence
+    environment: 
+      - CONFIG_SERVER=ms-discoveryserver-container
+    depends_on:
+      - ms-discoveryserver
+      - ms-configserver
+      - mongo-service
+ 
+  mysql-service:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydatabase
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+ 
+  mongo-service:
+    image: mongo:latest
+    container_name: mongo-container
+    restart: on-failure
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+ 
+volumes:
+  mysql-data:
+  mongo-data:

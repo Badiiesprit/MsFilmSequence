@@ -1,14 +1,13 @@
-package tn.esprit.mssequence.Dto;
+package tn.esprit.dto;
 
 import lombok.*;
-import tn.esprit.dto.FilmDTO;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class SequenceDTO {
+public class SequenceDTOGet {
     private String id;
     private String name;
     private String description;

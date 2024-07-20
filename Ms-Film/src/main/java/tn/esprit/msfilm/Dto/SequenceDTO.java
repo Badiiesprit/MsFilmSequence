@@ -1,7 +1,6 @@
-package tn.esprit.mssequence.Dto;
+package tn.esprit.msfilm.Dto;
 
 import lombok.*;
-import tn.esprit.dto.FilmDTO;
 
 @Getter
 @Setter

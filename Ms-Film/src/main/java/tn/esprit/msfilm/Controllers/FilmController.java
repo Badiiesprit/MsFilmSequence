@@ -2,6 +2,7 @@ package tn.esprit.msfilm.Controllers;
 
 //import tn.esprit.msfilm.Dto.FilmDTO;
 import tn.esprit.dto.FilmDTO;
+import tn.esprit.msfilm.Clients.ClientRestTemplate;
 import tn.esprit.msfilm.Services.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +17,23 @@ public class FilmController {
     @Autowired
     private FilmService filmService;
 
+    @Autowired
+    private ClientRestTemplate clientRestTemplate;
     @GetMapping
     public List<FilmDTO> getAllFilms() {
         return filmService.getAllFilms();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FilmDTO> getFilmById(@PathVariable Long id) {
+    public ResponseEntity<tn.esprit.msfilm.Dto.FilmDTO> getFilmById(@PathVariable Long id) {
         FilmDTO film = filmService.getFilmById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found"));
-        return ResponseEntity.ok(film);
+        tn.esprit.msfilm.Dto.FilmDTO newfilm = new tn.esprit.msfilm.Dto.FilmDTO();
+        newfilm.setId(film.getId());
+        newfilm.setDescription(film.getDescription());
+        newfilm.setName(film.getName());
+        newfilm.setSequences(clientRestTemplate.getSequenceByIdFilm(String.valueOf(film.getId())));
+        return ResponseEntity.ok(newfilm);
     }
 
     @PostMapping

@@ -2,6 +2,8 @@ package tn.esprit.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -11,4 +13,5 @@ public class FilmDTO {
     private Long id;
     private String name;
     private String description;
+    private List<SequenceDTO> sequences;
 }

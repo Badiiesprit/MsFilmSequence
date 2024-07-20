@@ -11,5 +11,6 @@ public class SequenceDTO {
     private String id;
     private String name;
     private String description;
-    private Long filmId;
+    private String filmId;
+    private FilmDTO film;
 }

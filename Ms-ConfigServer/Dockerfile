@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the executable JAR into the container at /app
-COPY target/msconfigserver.jar /app/msconfigserver.jar
+COPY target/Ms-ConfigServer-0.0.1-SNAPSHOT.jar /app/msconfigserver.jar
 
 # Make port 9093 available to the world outside this container
 EXPOSE 9093

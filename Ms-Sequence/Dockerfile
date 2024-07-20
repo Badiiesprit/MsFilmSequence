@@ -5,10 +5,10 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the executable JAR into the container at /app
-COPY target/Ms-GatewayServer-0.0.1-SNAPSHOT.jar /app/msgatewayserver.jar
+COPY target/Ms-Sequence-0.0.1-SNAPSHOT.jar /app/mssequenceserver.jar
 
-# Make port 9092 available to the world outside this container
-EXPOSE 9092
+# Make port 8761 available to the world outside this container
+EXPOSE 8761
 
 # Run the JAR file
-ENTRYPOINT ["java", "-jar", "msgatewayserver.jar"]
+ENTRYPOINT ["java", "-jar", "mssequenceserver.jar"]
